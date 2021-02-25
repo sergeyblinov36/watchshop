@@ -8,13 +8,15 @@ int main(int argc, char* argv[])
 {
 	Database& db = Database::getInstance(); //63 68 65 70 61
 	Controller& ctrl = Controller::getInstance();
-	int select = 99;
+	int mainSelect = 99;
+	int SecSelect = 0;
 
 	db.getConnection();
-	while (select != 0) {
+	while (mainSelect != 0) {
 		cout << "\n\n"
-			<< "1) login" << endl;
-		//<< " RECORD STUDIO-----Please select one of the options:" << endl
+			<< "1) login" << endl
+			<< "2) sign up" << endl;
+		//<< " RECORD STUDIO-----Please mainSelect one of the options:" << endl
 		//<< " 1) Show how much albums recorded between 2 dates." << endl
 		//<< " 2) Show how many songs musician recorded between 2 dates." << endl
 		//<< " 3) Show how many diffrent albums recorded between 2 dates by specific musician." << endl
@@ -32,19 +34,65 @@ int main(int argc, char* argv[])
 		//<< " 15) Musician that recorded the most songs in different genres." << endl
 		//<< " 0) End the program." << endl
 		//<< " Your Choice: ";
-		cin >> select;
+		cin >> mainSelect;
 
-		switch (select) {
+		switch (mainSelect) {
 		case 1:
 		{
 			if (ctrl.login("s@s.s", "123"))
 			{
 				cout << "yes";
+				SecSelect = 1;
+				system("CLS");
 			}
 			else
 			{
 				cout << "no";
 			}
+			break;
+		}
+		case 2:
+		{
+			if (ctrl.signUp("bbb@cc.d", "name", "pass"))
+			{
+				cout << "yes";
+				SecSelect = 1;
+			}
+			else
+			{
+				cout << "no";
+			}
+			break;
+		}
+		default:
+		{
+			cout << "please select the options above";
+		}
+		}
+		while (SecSelect != 0)
+		{
+			/*cout.clear();*/
+			
+			ctrl.welcomeMSG();
+			cin >> SecSelect;
+			switch (SecSelect)
+			{
+			case 1:
+			{
+				ctrl.browse(3, "london", 1, 40);
+				cout << endl;
+				break;
+			}
+			case 2:
+			{
+				ctrl.buy(1);
+				break;
+			}
+			default:
+				cout << "please select the options above";
+				break;
+			}
+
 		}
 
 		//	case 0: {
@@ -150,7 +198,7 @@ int main(int argc, char* argv[])
 
 		//	default: {
 		//		cout << "\ninvalid choice" << endl;
-		//		select = 42;
+		//		mainSelect = 42;
 		//		cin.clear();
 		//		cin.ignore(10000, '\n');
 		//		break;
@@ -159,15 +207,15 @@ int main(int argc, char* argv[])
 		//	}
 
 		//	cout << endl << "Press 1 to Return To the Main Menu.\nYour Choice: " << endl;
-		//	select = 0; //by CHEPA
-		//	while (select != 1) {
-		//		cin >> select;
+		//	mainSelect = 0; //by CHEPA
+		//	while (mainSelect != 1) {
+		//		cin >> mainSelect;
 		//		cin.clear();
 		//		cin.ignore(10000, '\n');
 		//	}
 
 
-		}
+		//}
 	}
 	return 0;
 }

@@ -12,6 +12,8 @@
 #include <jdbc/cppconn/prepared_statement.h>
 #include <iostream>
 #include <tuple>
+#include <vector>
+#include <ctime>
 
 using namespace sql;
 using namespace std;
@@ -43,6 +45,16 @@ public:
 
 	//Log in
 	tuple<string, string, int, int> login(string, string);
+	bool signUp(string, string, string);
+	bool CheckMail(string);
+	vector<string> showStock();
+	string showStock(int);
+	vector<string> showStock(int,string,int,int);
+
+	bool buy(int,string);
+	bool order();
+	bool subscribe();
+	bool unsubscribe();
 
 
 	////Option 1 

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <tuple>
+#include<vector>
 
 using namespace std;
 
@@ -43,10 +44,7 @@ Connection* Database::getConnection() {
 	return 0;
 }
 
-//tuple<string, string, int, int> Database::login(string, string)
-//{
-//	return tuple<string, string, int, int>();
-//}
+
 
 //log in
 tuple<string, string, int, int> Database::login(string email, string pass)
@@ -83,6 +81,247 @@ tuple<string, string, int, int> Database::login(string email, string pass)
 		throw(0);
 	}
 
+}
+//;
+bool Database::signUp(string email, string name , string pass)
+{
+	bool state = false;
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	try {
+		pstmt = con->prepareStatement("INSERT INTO `sys`.`users` (`userid`, `name`, `email`, `subscribed`, `role`, `password`) VALUES(?, ?, ?, ?, ?, ?);");
+	}
+	catch (SQLException& e) {
+		cout << e.what();
+	}
+	int random = rand();
+	try{
+		pstmt->setString(1, to_string(random));
+		pstmt->setString(2, name);
+		pstmt->setString(3, email);
+		pstmt->setInt(4, 0);
+		pstmt->setInt(5, 0);
+		pstmt->setString(6, pass);
+		rset = pstmt->executeQuery();
+	}
+	catch (SQLException& e) {
+		cout << e.what();
+		cout << endl;
+	}
+
+	//if (rset->next())
+	//{
+
+	//}
+	//string name = rset->getString("name");
+	//int sub = rset->getInt("subscribed");
+	//int role = rset->getInt("role");
+	//delete con;
+	//delete pstmt;
+	//delete rset;
+	
+}
+
+bool Database::CheckMail(string email)
+{
+	bool state = false;
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	try {
+		pstmt = con->prepareStatement("SELECT * FROM users WHERE email = ?;");
+	}
+	catch (SQLException& e) {
+		cout << e.what();
+	}
+	pstmt->setString(1, email);
+	rset = pstmt->executeQuery();
+
+	if (rset->next())
+	{
+		state = true;
+	}
+	delete con;
+	delete pstmt;
+	delete rset;
+	return state;
+}
+
+vector<string> Database::showStock()
+{
+	vector<string> data;
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	try
+	{
+		pstmt = con->prepareStatement("SELECT * FROM watches ;");
+	}
+	catch (SQLException& e) {
+		cout << e.what();
+	}
+	rset = pstmt->executeQuery();
+	while (rset->next())
+	{
+		data.push_back(to_string(rset->getInt(1)));
+		data.push_back((rset->getString(2)));
+		data.push_back((rset->getString(3)));
+		data.push_back(to_string(rset->getInt(4)));
+		data.push_back(to_string(rset->getInt(5)));
+		data.push_back((rset->getString(6)));
+	}
+	delete con;
+	delete pstmt;
+	delete rset;
+	return data;
+}
+//1 - browse all
+//2 - browse by price
+//3 - browse by brand
+//4 - browse by type
+vector<string> Database::showStock(int option,string msg = NULL, int start = 0, int top = 0)
+{
+	vector<string> data;
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	switch (option)
+	{
+	case 1: 
+	{
+		try
+		{
+			pstmt = con->prepareStatement("SELECT * FROM watches ;");
+		}
+		catch (SQLException& e) {
+			cout << e.what();
+		}
+		break;
+	}
+	case 2:
+	{
+		try
+		{
+			pstmt = con->prepareStatement("SELECT * FROM watches WHERE price>? AND price < ?;");
+		}
+		catch (SQLException& e) {
+			cout << e.what();
+		}
+		pstmt->setInt(1, start);
+		pstmt->setInt(2, top);
+		break;
+	}
+	case 3:
+	{
+		try
+		{
+			pstmt = con->prepareStatement("SELECT * FROM watches WHERE brand like ?;");
+		}
+		catch (SQLException& e) {
+			cout << e.what();
+		}
+		pstmt->setString(1, "%" + msg + "%");
+		break;
+	}
+	case 4:
+	{
+		try
+		{
+			pstmt = con->prepareStatement("SELECT * FROM watches WHERE type = ?;");
+		}
+		catch (SQLException& e) {
+			cout << e.what();
+		}
+		pstmt->setString(1, "%" + msg + "%");
+		break;
+	}
+	}
+	rset = pstmt->executeQuery();
+	while (rset->next())
+	{
+		data.push_back(to_string(rset->getInt(1)));
+		data.push_back((rset->getString(2)));
+		data.push_back((rset->getString(3)));
+		data.push_back(to_string(rset->getInt(4)));
+		data.push_back(to_string(rset->getInt(5)));
+		data.push_back((rset->getString(6)));
+	}
+	delete con;
+	delete pstmt;
+	delete rset;
+	return data;
+}
+
+bool Database::buy(int watchid,string email)
+{
+	bool state = false;
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	try
+	{
+		pstmt = con->prepareStatement("SELECT watches.quantity FROM watches WHERE watchid = ?;");
+	}
+	catch (SQLException& e) {
+		cout << e.what();
+	}
+	pstmt->setInt(1, watchid);
+	rset = pstmt->executeQuery();
+	if (rset->next())
+	{
+		if(rset->getInt(1)==0)
+		{
+			cout << "we are out of stock,whould you like to order the item or look for something else?" << endl;
+		}
+		else {
+			int newQuantity = rset->getInt(1) - 1;
+
+			try
+			{
+				pstmt = con->prepareStatement("UPDATE watches set quantity=? WHERE watchid = ?");
+			}
+			catch (SQLException& e) {
+				cout << e.what();
+			}
+			pstmt->setInt(1, newQuantity);
+			pstmt->setInt(2, watchid);
+			rset = pstmt->executeQuery();
+			try {
+				pstmt = con->prepareStatement("SELECT users.userid FROM users WHERE email = ?;");
+			}
+			catch (SQLException& e) {
+				cout << e.what();
+			}
+			pstmt->setString(1, email);
+			rset = pstmt->executeQuery();
+			int userid;
+			rset->next();
+			userid = rset->getInt(1); 
+			try
+			{
+				pstmt = con->prepareStatement("INSERT INTO `sys`.`purchases` (`idpurchases`, `userid`, `watchid`, `date`) VALUES(?, ?, ?, NOW()); ");
+			}
+			catch (SQLException& e) {
+				cout << e.what();
+			}
+			pstmt->setInt(1, rand());
+			pstmt->setInt(2, userid);
+			pstmt->setInt(3, watchid);
+			rset = pstmt->executeQuery();
+			
+			state = true;
+			
+		}
+		
+	}
+
+	return state;
 }
 
 

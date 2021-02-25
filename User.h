@@ -11,10 +11,8 @@ private:
 	int role;
 public:
 	User(string,string,int,int);
-	void print()
-	{
-		cout << this->name << "  " << this->email << "  " << this->subscribed << "  " << this->role <<"from class baby" <<endl;
-	}
+	void print();
+	string getEmail();
 
 };
 
