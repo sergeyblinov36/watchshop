@@ -52,9 +52,10 @@ public:
 	vector<string> showStock(int,string,int,int);
 
 	bool buy(int,string);
-	bool order();
+	bool order(int,string,string,int)throw(int);
 	bool subscribe();
 	bool unsubscribe();
+	int getUserid(string);
 
 
 	////Option 1 

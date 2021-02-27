@@ -86,15 +86,31 @@ bool Controller::browse(int option, string msg, int start, int top)
 	return false;
 }
 
-bool Controller::buy(int watchtobuy)
+bool Controller::order(int option, string description, int watchid)
+{
+	bool state = false;
+	state = db.order(option,user->getEmail(), description, watchid);
+
+	return state;
+}
+
+bool Controller::buy(int watchtobuy) throw(int)
 {
 	bool state = false;
 	if (std::find(watcheid.begin(), watcheid.end(), watchtobuy) != watcheid.end())
 	{
-		if (db.buy(watchtobuy, user->getEmail()));
-		{
-			state = true;
+		try{
+			state = db.buy(watchtobuy, user->getEmail());
 		}
+		catch (int e)
+		{
+			cout << "exception cought"<<endl;
+			throw 0;
+		}
+		//if (db.buy(watchtobuy, user->getEmail()));
+		//{
+		//	state = true;
+		//}
 	}
 	return state;
 }

@@ -85,8 +85,29 @@ int main(int argc, char* argv[])
 			}
 			case 2:
 			{
-				ctrl.buy(1);
+				try{ ctrl.buy(1); }
+				catch (int e)
+				{
+					if (e == 0)
+					{
+						cout << "we have ran out of stock." << endl<<
+							"press 1 to place an order on the watch"<<endl
+							<<"press any button to return to the main menu"<<endl;
+						int option;
+						cin >> option;
+						if (option == 1)
+						{
+							ctrl.order(1,"",1);
+						}
+
+					}
+				}
+				
 				break;
+			}
+			case 3 :
+			{
+				ctrl.order(2,"iphone smart watch");
 			}
 			default:
 				cout << "please select the options above";

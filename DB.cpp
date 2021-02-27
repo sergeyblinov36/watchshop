@@ -257,7 +257,7 @@ vector<string> Database::showStock(int option,string msg = NULL, int start = 0, 
 	return data;
 }
 
-bool Database::buy(int watchid,string email)
+bool Database::buy(int watchid,string email) throw(int )
 {
 	bool state = false;
 	Connection* con = driver->connect(connection_properties);
@@ -277,7 +277,7 @@ bool Database::buy(int watchid,string email)
 	{
 		if(rset->getInt(1)==0)
 		{
-			cout << "we are out of stock,whould you like to order the item or look for something else?" << endl;
+			throw 1;
 		}
 		else {
 			int newQuantity = rset->getInt(1) - 1;
@@ -292,17 +292,8 @@ bool Database::buy(int watchid,string email)
 			pstmt->setInt(1, newQuantity);
 			pstmt->setInt(2, watchid);
 			rset = pstmt->executeQuery();
-			try {
-				pstmt = con->prepareStatement("SELECT users.userid FROM users WHERE email = ?;");
-			}
-			catch (SQLException& e) {
-				cout << e.what();
-			}
-			pstmt->setString(1, email);
-			rset = pstmt->executeQuery();
-			int userid;
-			rset->next();
-			userid = rset->getInt(1); 
+			
+			int userid = getUserid(email);
 			try
 			{
 				pstmt = con->prepareStatement("INSERT INTO `sys`.`purchases` (`idpurchases`, `userid`, `watchid`, `date`) VALUES(?, ?, ?, NOW()); ");
@@ -320,9 +311,86 @@ bool Database::buy(int watchid,string email)
 		}
 		
 	}
-
+	delete con;
+	delete pstmt;
+	delete rset;
 	return state;
 }
+
+//option 1 - watch exists in db but ran out of stock
+//option 2 - watch does not exist in db
+bool Database::order(int option,string email,string description = NULL,int watchid = 0)
+{
+	bool state = false;
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	int userid = getUserid(email);
+	cout << userid<<endl;
+	if (option == 1)
+	{
+		try
+		{
+			pstmt = con->prepareStatement("INSERT INTO `sys`.`orders` (`userid`,`watchid`,`date`,`description`) VALUES(?,?,NOW(),?);");
+		}
+		catch (SQLException& e) {
+			cout << e.what();
+		}
+		pstmt->setInt(1, userid);
+		pstmt->setInt(2, watchid);
+		pstmt->setString(3, " ");
+		rset = pstmt->executeQuery();
+		state = true;
+	}
+	else
+	{
+		try
+		{
+			pstmt = con->prepareStatement("INSERT INTO `orders` (`userid`,`watchid`,`date`,`description`) VALUES (?,?,NOW(),?); ");
+		}
+		catch (SQLException& e) {
+			cout << e.what();
+		}
+		int newWatch = rand();
+		pstmt->setInt(1, userid);
+		pstmt->setInt(2, newWatch);
+		pstmt->setString(3, description);
+		rset = pstmt->executeQuery();
+		state = true;
+	}
+	delete con;
+	delete pstmt;
+	delete rset;
+	return state;
+}
+
+int Database::getUserid(string email)
+{
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	try {
+		pstmt = con->prepareStatement("SELECT users.userid FROM users WHERE email = ?;");
+	}
+	catch (SQLException& e) {
+		cout << e.what();
+	}
+	pstmt->setString(1, email);
+	rset = pstmt->executeQuery();
+	int userid;
+	rset->next();
+	userid = rset->getInt(1);
+
+	delete con;
+	delete pstmt;
+	delete rset;
+	return userid;
+}
+
+
+
 
 
 ////Option 1
