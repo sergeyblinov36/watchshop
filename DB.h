@@ -53,8 +53,9 @@ public:
 
 	bool buy(int,string);
 	bool order(int,string,string,int)throw(int);
-	bool subscribe();
+	bool subscribe(string);
 	bool unsubscribe();
+	bool checkifSubscribed(string);
 	int getUserid(string);
 
 

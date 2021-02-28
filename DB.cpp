@@ -327,7 +327,7 @@ bool Database::order(int option,string email,string description = NULL,int watch
 	ResultSet* rset;
 	PreparedStatement* pstmt = NULL;
 	int userid = getUserid(email);
-	cout << userid<<endl;
+	cout << description<<endl;
 	if (option == 1)
 	{
 		try
@@ -347,22 +347,91 @@ bool Database::order(int option,string email,string description = NULL,int watch
 	{
 		try
 		{
-			pstmt = con->prepareStatement("INSERT INTO `orders` (`userid`,`watchid`,`date`,`description`) VALUES (?,?,NOW(),?); ");
+			pstmt = con->prepareStatement("INSERT INTO `sys`.`orders` (`userid`,`watchid`,`date`,`description`,`orderid`) VALUES (?,?,NOW(),?,?); ");
 		}
 		catch (SQLException& e) {
 			cout << e.what();
 		}
 		int newWatch = rand();
+		int orderid = rand();
 		pstmt->setInt(1, userid);
 		pstmt->setInt(2, newWatch);
 		pstmt->setString(3, description);
-		rset = pstmt->executeQuery();
+		pstmt->setInt(4, orderid);
+		try{ rset = pstmt->executeQuery(); }
+		catch (SQLException& e) {
+			cout << e.what();
+		}
 		state = true;
 	}
 	delete con;
 	delete pstmt;
 	delete rset;
+
 	return state;
+}
+
+bool Database::subscribe(string email)
+{
+	bool state = false;
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	int userid = getUserid(email);
+	try
+	{
+		pstmt = con->prepareStatement("UPDATE users set subscribed=? WHERE userid = ?");
+	}
+	catch (SQLException& e) {
+		cout << e.what();
+	}
+	if (checkifSubscribed(email))
+	{
+		pstmt->setInt(1, 1);
+	}
+	else
+	{
+		pstmt->setInt(1, 0);
+	}
+	pstmt->setInt(2,userid);
+	rset = pstmt->executeQuery();
+	state = true;
+	delete con;
+	delete pstmt;
+	delete rset;
+	return state;
+}
+
+bool Database::checkifSubscribed(string email)
+{
+	bool state = false;
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	int userid = getUserid(email);
+	try
+	{
+		pstmt = con->prepareStatement("SELECT users.subscribed FROM users WHERE userid = ?;");
+	}
+	catch (SQLException& e) {
+		cout << e.what();
+	}
+	pstmt->setInt(1, userid);
+	rset = pstmt->executeQuery();
+	if (rset->next())
+	{
+		if (rset->getInt(1) != 0)
+		{
+			state = true;
+		}
+
+	}
+	delete con;
+	delete pstmt;
+	delete rset;
+	return false;
 }
 
 int Database::getUserid(string email)

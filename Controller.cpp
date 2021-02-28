@@ -115,6 +115,22 @@ bool Controller::buy(int watchtobuy) throw(int)
 	return state;
 }
 
+bool Controller::subcribe()
+{
+	bool state = false;
+	if (db.subscribe(user->getEmail()))
+	{
+		state = true;
+	}
+	return state;
+}
+
+bool Controller::checkSubscribed()
+{
+	db.checkifSubscribed(user->getEmail());
+	return false;
+}
+
 void Controller::welcomeMSG()
 {
 	user->print();

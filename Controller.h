@@ -23,6 +23,7 @@ class Controller
 		bool order(int,string description = NULL,int watchid = 0)throw(int);
 		bool buy(int);
 		bool subcribe();
+		bool checkSubscribed();
 		bool unsubscribe();
 		void welcomeMSG();
 
