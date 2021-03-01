@@ -57,6 +57,8 @@ public:
 	bool checkifSubscribed(string);
 	int getUserid(string);
 	vector<string> getReceipt(string);
+	vector<string> readMsgs(string);
+	void deleteMsgs(string);
 
 	//manager/employee functions
 	int getQuantity(int);

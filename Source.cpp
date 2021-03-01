@@ -180,7 +180,14 @@ int main(int argc, char* argv[])
 			}
 			case 2:
 			{
-				cout << "Feature is under development :(" << endl;
+				cout << "Inbox" << endl;
+				ctrl.readMsgs();
+				cout << endl << "to delete massages press 1. to go back press any button" << endl;
+				cin >> SecSelect;
+				if (SecSelect == 1)
+				{
+					ctrl.deleteMsgs();
+				}
 				break;
 			}
 			case 3:

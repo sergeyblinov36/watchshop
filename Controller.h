@@ -32,6 +32,9 @@ class Controller
 		bool viewReport(int[]);
 		bool checkRole();
 		bool changeRole(string);
+		void readMsgs();
+		void deleteMsgs();
+
 
 };
 

@@ -264,6 +264,30 @@ bool Controller::changeRole(string email)
 	return false;
 }
 
+void Controller::readMsgs()
+{
+	vector<string> data = db.readMsgs(user->getEmail());
+
+	int numOfCol = 2;
+	int i = 0;
+	for (i = 0; i < data.size(); i++)
+	{
+		if (i % numOfCol == 0)
+		{
+			cout << endl;
+		}
+		cout << setw(10) << left << data[i] << "	";
+		
+	}
+	cout << endl;
+	
+}
+
+void Controller::deleteMsgs()
+{
+	db.deleteMsgs(user->getEmail());
+}
+
 
 
 

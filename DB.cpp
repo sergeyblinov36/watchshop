@@ -483,6 +483,55 @@ vector<string> Database::getReceipt(string email)
 	return data;
 }
 
+vector<string> Database::readMsgs(string email)
+{
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	int userid = getUserid(email);
+	vector<string> data;
+	try {
+		pstmt = con->prepareStatement("SELECT msgid,msg FROM massages WHERE userid = ?;");
+	}
+	catch (SQLException& e) {
+		cout << e.what();
+	}
+	pstmt->setInt(1, userid);
+	rset = pstmt->executeQuery();
+	while (rset->next())
+	{
+		data.push_back(to_string(rset->getInt(1)));
+		data.push_back(rset->getString(2));
+		
+	}
+	delete con;
+	delete pstmt;
+	delete rset;
+	return data;
+}
+
+void Database::deleteMsgs(string email)
+{
+	Connection* con = driver->connect(connection_properties);
+	con->setSchema(DB_NAME);
+	ResultSet* rset;
+	PreparedStatement* pstmt = NULL;
+	int userid = getUserid(email);
+	try {
+		pstmt = con->prepareStatement("DELETE FROM massages WHERE userid = ?;");
+	}
+	catch (SQLException& e) {
+		cout << e.what();
+	}
+	pstmt->setInt(1, userid);
+	rset = pstmt->executeQuery();
+	delete con;
+	delete pstmt;
+	delete rset;
+	
+}
+
 int Database::getQuantity(int watchid)
 {
 	int quantity =0;
