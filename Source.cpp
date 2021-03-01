@@ -213,6 +213,7 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
+			system("CLS");
 			//An employee has to register as a customer and then the manager changing his settings
 			cout << "Press 1 to change role" << endl
 				<< "Press 2 to see what is in stock" << endl
@@ -248,7 +249,10 @@ int main(int argc, char* argv[])
 				case 2:
 				{
 					system("CLS");
-					ctrl.browse(SecSelect);
+					ctrl.browse(1);
+					cout << "Press any button to go back"<<endl;
+					cin >> SecSelect;
+
 					break;
 				}
 				case 3:
@@ -270,6 +274,7 @@ int main(int argc, char* argv[])
 								cin >> watchid;
 								cout << "Please enter how many watches have arrived" << endl;
 								cin >> quantity;
+								cout << 2;
 								ctrl.updateStock(SecSelect, watchid, quantity);
 								break;
 							}
@@ -319,6 +324,8 @@ int main(int argc, char* argv[])
 				case 4:
 				{
 					ctrl.showOrders();
+					cout << "Press any button to go back" << endl;
+					cin >> SecSelect;
 					break;
 				}
 				case 5:
@@ -328,6 +335,7 @@ int main(int argc, char* argv[])
 					cin >> date[0] >> date[1] >> date[2];
 					cout << "Please enter ending date or anything under 2020 to check the last 24H" << endl;
 					cin >> date[3] >> date[4] >> date[5];
+					cout << 1;
 					ctrl.viewReport(date);
 					break;
 				}

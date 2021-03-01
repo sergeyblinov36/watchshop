@@ -1,7 +1,16 @@
-﻿  Source.cpp
+﻿  Controller.cpp
+C:\Users\serge\OneDrive\שולחן העבודה\School\methods\watch shop2\watch shop\watch shop\Controller.h(18,65): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+C:\Users\serge\OneDrive\שולחן העבודה\School\methods\watch shop2\watch shop\watch shop\Controller.h(23,69): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+C:\Users\serge\OneDrive\שולחן העבודה\School\methods\watch shop2\watch shop\watch shop\Controller.cpp(33,13): warning C4101: 'e': unreferenced local variable
+C:\Users\serge\OneDrive\שולחן העבודה\School\methods\watch shop2\watch shop\watch shop\Controller.cpp(61,13): warning C4101: 'e': unreferenced local variable
+C:\Users\serge\OneDrive\שולחן העבודה\School\methods\watch shop2\watch shop\watch shop\Controller.cpp(96,1): warning C5043: 'Controller::order': exception specification does not match previous declaration
+C:\Users\serge\OneDrive\שולחן העבודה\School\methods\watch shop2\watch shop\watch shop\Controller.h(23): message : see declaration of 'Controller::order'
+C:\Users\serge\OneDrive\שולחן העבודה\School\methods\watch shop2\watch shop\watch shop\Controller.cpp(104,1): warning C5043: 'Controller::buy': exception specification does not match previous declaration
+C:\Users\serge\OneDrive\שולחן העבודה\School\methods\watch shop2\watch shop\watch shop\Controller.h(24): message : see declaration of 'Controller::buy'
+C:\Users\serge\OneDrive\שולחן העבודה\School\methods\watch shop2\watch shop\watch shop\Controller.cpp(111,14): warning C4101: 'e': unreferenced local variable
   Generating code
-  1 of 467 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    25 functions had inline decision re-evaluated but remain unchanged
+  22 of 469 functions ( 4.7%) were compiled, the rest were copied from previous compilation.
+    3 functions were new in current compilation
+    79 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   watch shop.vcxproj -> C:\Users\serge\OneDrive\שולחן העבודה\School\methods\watch shop2\watch shop\x64\Release\watch shop.exe

@@ -28,7 +28,7 @@ class Controller
 		void welcomeMSG();
 		bool showReceipt();
 		void showOrders();
-		bool updateStock(int, int, int = 0, int = 0, string = NULL, string = NULL, string = NULL);
+		bool updateStock(int, int, int = 0, int = 0, string = "", string = "", string = "");
 		bool viewReport(int[]);
 		bool checkRole();
 		bool changeRole(string);

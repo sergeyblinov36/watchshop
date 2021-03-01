@@ -188,6 +188,7 @@ bool Controller::updateStock(int option, int watchid, int quantity, int price, s
 	bool state = false;
 	if (option == 1)
 	{
+		cout << 1;
 		state = db.updateStock(option, watchid, quantity);
 	}
 	if (option == 2)
@@ -216,12 +217,24 @@ bool Controller::viewReport(int date[])
 	{
 		if (date[3] < 2020)
 		{
-			startDate = to_string(date[0]) + "-" + to_string(date[1]) + "-" + to_string(date[2]);
+			startDate += to_string(date[0]);
+			startDate += "-";
+			startDate += to_string(date[1]);
+			startDate += "-";
+			startDate += to_string(date[2]);
 		}
 		else if (date[3] >= 2020)
 		{
-			startDate = to_string(date[0]) + "-" + to_string(date[1]) + "-" + to_string(date[2]);
-			endDate = to_string(date[3]) + "-" + to_string(date[4]) + "-" + to_string(date[5]);
+			startDate += to_string(date[0]);
+			startDate += "-";
+			startDate += to_string(date[1]);
+			startDate += "1";
+			startDate += to_string(date[2]);
+			endDate += to_string(date[3]);
+			endDate += "-";
+			endDate += to_string(date[4]);
+			endDate += "-";
+			endDate += to_string(date[5]);
 		}
 		else return false;
 	}

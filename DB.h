@@ -63,7 +63,7 @@ public:
 	//manager/employee functions
 	int getQuantity(int);
 	bool changeRole(string);
-	bool updateStock(int,int,int = 0,int = 0,string = NULL,string = NULL,string = NULL);
+	bool updateStock(int,int,int = 0,int = 0,string = "",string = "",string = "");
 	bool informCustomers();
 	vector<string> viewOrders();
 	vector<string> viewReport(string,string = NULL);

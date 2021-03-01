@@ -115,7 +115,7 @@ bool Database::signUp(string email, string name , string pass)
 	delete con;
 	delete pstmt;
 	delete rset;
-	
+	return state;
 }
 
 bool Database::CheckMail(string email)
