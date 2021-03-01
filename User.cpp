@@ -16,4 +16,9 @@ string User::getEmail()
 	return this->email;
 }
 
+int User::getRole()
+{
+	return this->role;
+}
+
 

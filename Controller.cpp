@@ -14,12 +14,12 @@ Controller& Controller::getInstance() {
 	return *instance;
 }
 static User* user=NULL;
-bool Controller::login(string mail, string pass) throw(string)
+bool Controller::login(string mail, string pass) 
 {
 	bool state = false;
-	if (mail.empty() && pass.empty())
+	if ((mail.empty() || pass.empty())||(mail=="\n" || pass=="\n"))
 	{
-		throw "mail or password is empty";
+		return state;
 	}
 	string name,email;
 	int sub, role;
@@ -73,6 +73,12 @@ bool Controller::browse(int option, string msg, int start, int top)
 	int i = 0;
 	
 	int j = 0;
+	cout << setw(10) << left << " Watch ID" << "	";
+	cout << setw(10) << left << "Brand" << "	";
+	cout << setw(10) << left << "Type" << "	";
+	cout << setw(10) << left << "Price" << "	";
+	cout << setw(10) << left << "Quantity" << "	";
+	cout << setw(10) << left << "Model" << "	";
 	for (i = 0; i < data.size(); i++)
 	{
 		if (i % numOfCol == 0)
@@ -134,6 +140,113 @@ bool Controller::checkSubscribed()
 void Controller::welcomeMSG()
 {
 	user->print();
+}
+
+bool Controller::showReceipt()
+{
+	bool state = false;
+	vector<string> data = db.getReceipt(user->getEmail());
+	if (data.empty())
+	{
+		state = true;
+	}
+	int numOfCol = 2;
+	int i = 0;
+	for (i = 0; i < data.size(); i++)
+	{
+		if (i % numOfCol == 0)
+		{
+			cout << endl;
+		}
+		cout << setw(10) << left << data[i] << "	";
+		state = true;
+	}
+	cout << endl;
+	return state;
+}
+
+void Controller::showOrders()
+{
+	vector<string> data = db.viewOrders();
+	int numOfCol = 5;
+	int i = 0;
+
+	int j = 0;
+	for (i = 0; i < data.size(); i++)
+	{
+		if (i % numOfCol == 0)
+		{
+			cout << endl;
+		}
+		cout << setw(10) << left << data[i] << "	";
+	}
+	cout << endl;
+}
+
+bool Controller::updateStock(int option, int watchid, int quantity = 0, int price = 0, string brand = NULL, string type = NULL, string model = NULL)
+{
+	bool state = false;
+	if (option == 1)
+	{
+		state = db.updateStock(option, watchid, quantity);
+	}
+	if (option == 2)
+	{
+		state = db.updateStock(option, watchid, 0, price);
+		
+	}
+	if (option == 3)
+	{
+		if (brand != NULL && type != NULL && model != NULL)
+		{
+			state = db.updateStock(option, watchid, quantity, price, type, model);
+		}
+	}
+	return false;
+}
+
+bool Controller::viewReport(int* date)
+{
+	bool state = false;
+	string startDate;
+	string endDate;
+	if (date == NULL)
+	{
+		if (sizeof(date) / sizeof(date[0]) == 3)
+		{
+			startDate = to_string(date[0])+"-"+to_string(date[1])+"-"+to_string(date[2]);
+		}
+		else if (sizeof(date) / sizeof(date[0]) == 6)
+		{
+			startDate = to_string(date[0]) + "-" + to_string(date[1]) + "-" + to_string(date[2]);
+			endDate = to_string(date[3]) + "-" + to_string(date[4]) + "-" + to_string(date[5]);
+		}
+	}
+	vector<string> data = db.viewReport(startDate,endDate);
+	int numOfCol = 2;
+	int i = 0;
+	for (i = 0; i < data.size(); i++)
+	{
+		if (i % numOfCol == 0)
+		{
+			cout << endl;
+		}
+		cout << setw(10) << left << data[i] << "	";
+		state = true;
+	}
+	cout << endl;
+	return state;
+
+}
+
+bool Controller::checkRole()
+{
+	bool state = false;
+	if (user->getRole() == 0)
+	{
+		state = true;
+	}
+	return state;
 }
 
 

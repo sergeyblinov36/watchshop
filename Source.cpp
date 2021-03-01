@@ -4,6 +4,8 @@
 
 using namespace std;
 
+void buy();
+
 int main(int argc, char* argv[])
 {
 	Database& db = Database::getInstance(); //63 68 65 70 61
@@ -12,232 +14,215 @@ int main(int argc, char* argv[])
 	int SecSelect = 0;
 
 	db.getConnection();
+	//first while,first menu
 	while (mainSelect != 0) {
+
 		cout << "\n\n"
 			<< "1) login" << endl
 			<< "2) sign up" << endl;
-		//<< " RECORD STUDIO-----Please mainSelect one of the options:" << endl
-		//<< " 1) Show how much albums recorded between 2 dates." << endl
-		//<< " 2) Show how many songs musician recorded between 2 dates." << endl
-		//<< " 3) Show how many diffrent albums recorded between 2 dates by specific musician." << endl
-		//<< " 4) Show the most popular music instrument." << endl
-		//<< " 5) Show instruments in selected album." << endl
-		//<< " 6) Most productive producer between 2 dates." << endl
-		//<< " 7) Most popular manufacturer between 2 dates." << endl
-		//<< " 8) How much musicians recorder in all time." << endl
-		//<< " 9) Show most collaborative musician ." << endl
-		//<< " 10) Most popular genre over all times." << endl
-		//<< " 11) Technician that recorded the biggest number of songs." << endl
-		//<< " 12) First album that was recorded in studio." << endl
-		//<< " 13) List of songs that included in 2 or more albums." << endl
-		//<< " 14) List of technicians that recorded s whole album." << endl
-		//<< " 15) Musician that recorded the most songs in different genres." << endl
-		//<< " 0) End the program." << endl
-		//<< " Your Choice: ";
 		cin >> mainSelect;
 
 		switch (mainSelect) {
+			//log in
 		case 1:
 		{
-			if (ctrl.login("s@s.s", "123"))
+			system("CLS");
+			string email;
+			string password;
+			cout << endl << "Enter your mail" << endl;
+			cin >> email;
+			cout << endl << "Enter password" << endl;
+			cin >> password;
+			if (ctrl.login(email, password))
 			{
-				cout << "yes";
 				SecSelect = 1;
 				system("CLS");
 			}
 			else
 			{
-				cout << "no";
+				cout << "Email or password is incorrect";
 			}
 			break;
 		}
+		//sign up
 		case 2:
 		{
-			if (ctrl.signUp("bbb@cc.d", "name", "pass"))
+			system("CLS");
+			string email, name, password;
+			cout << endl << "Enter your mail" << endl;
+			cin >> email;
+			cout << endl << "Enter your name" << endl;
+			cin >> name;
+			cout << endl << "Enter password" << endl;
+			cin >> password;
+			if (ctrl.signUp(email, name, password))
 			{
-				cout << "yes";
 				SecSelect = 1;
+				system("CLS");
 			}
 			else
 			{
-				cout << "no";
+				cout << "Incorrect input";
 			}
 			break;
 		}
 		default:
 		{
-			cout << "please select the options above";
+			cout << endl << "please select the options above";
 		}
 		}
+		//second while,main menu,after user verification
 		while (SecSelect != 0)
 		{
-			/*cout.clear();*/
-			
 			ctrl.welcomeMSG();
+			cin >> SecSelect;
+			system("CLS");
+			//if a customer
+			if (ctrl.checkRole())
+			{
+			cout << "Press 1 to check out selection of watches" << endl
+				<< "Press 2 to read your massages" << endl
+				<< "press 3 to un/subscribe" << endl
+				<< "press 4 to log off" << endl;
 			cin >> SecSelect;
 			switch (SecSelect)
 			{
 			case 1:
 			{
-				ctrl.browse(3, "london", 1, 40);
-				cout << endl;
-				break;
+				ctrl.browse(SecSelect);
+#pragma region options
+
+				cout << endl << "To buy a watch from the list please press 1"
+					<< endl << "To filter by price please press 2"
+					<< endl << "To filter by brand please press 3"
+					<< endl << "To filter by type please press 4"
+					<< endl << "If you don't see the watch you've been searching for,please consider ordering it by pressing 5"
+					<< endl << "To check out please press 6"
+					<< endl << "To go back to main menu please press 7"
+					<< endl;
+#pragma endregion
+				cin >> SecSelect;
+				system("CLS");
+				switch (SecSelect)
+				{
+					case 1:
+					{
+						ctrl.browse(SecSelect);
+						buy();
+						break;
+					}
+					case 2:
+					{
+							int low, high;
+							cout << "Please enter your lowest price" << endl;
+							cin >> low;
+							cout << "Please enter your highest price" << endl;
+							cin >> high;
+							ctrl.browse(SecSelect, "", low, high);
+							buy();
+							break;
+					}
+					case 3:
+					{
+						string brand;
+						cout << "Please write the brand of watch you would like to buy" << endl;
+						cin >> brand;
+						ctrl.browse(SecSelect, brand);
+						buy();
+						break;
+					}
+					case 4:
+					{
+						string type;
+						cout << "Please write the type of watch you would like to buy" << endl;
+						cin >> type;
+						ctrl.browse(SecSelect, type);
+						buy();
+						break;
+					}
+					case 5:
+					{
+						string msg;
+						cout << "Please write what watch would you like to order" << endl;
+						cin >> msg;
+						if (ctrl.order(2, msg))
+						{
+							cout << "Your order has been recieved.We will contact you soon" << endl;
+						}
+						else
+						{
+							cout << "Something went wrong" << endl;
+						}
+						break;
+					}
+					case 6:
+					{
+						ctrl.showReceipt();
+						SecSelect = 0;
+						break;
+					}
+					case 7:
+					{
+						SecSelect = 0;
+						break;
+					}
+				}
 			}
 			case 2:
 			{
-				try{ ctrl.buy(1); }
-				catch (int e)
-				{
-					if (e == 0)
-					{
-						cout << "we have ran out of stock." << endl<<
-							"press 1 to place an order on the watch"<<endl
-							<<"press any button to return to the main menu"<<endl;
-						int option;
-						cin >> option;
-						if (option == 1)
-						{
-							ctrl.order(1,"",1);
-						}
-
-					}
-				}
-				
+				cout << "Feature is under development :(" << endl;
 				break;
 			}
-			case 3 :
+			case 3:
 			{
-				ctrl.order(2,"iphone smart watch");
+				ctrl.subcribe();
+				if (ctrl.checkSubscribed())
+				{
+					cout << "Thank you for subscribing" << endl;
+				}
+				else cout << "Unsubscribed" << endl;
+				break;
+			}
+			case 4:
+			{
+				SecSelect = 0;
+				break;
 			}
 			default:
-				cout << "please select the options above";
-				break;
+			{
+				cout << "Wrong input.Please try again" << endl;
 			}
+			}
+			}
+			else
+			{
 
+			}
 		}
-
-		//	case 0: {
-
-		//		cout << "Bye!" << endl;
-		//		exit(EXIT_SUCCESS);
-		//	}
-
-		//	case 1: {
-		//		db.showBetweenTwoDates();
-		//		cin.clear();
-		//		cin.ignore(10000, '\n');
-		//		break;
-		//	}
-
-		//	case 2: {
-		//		db.showSongsBetweenTwoDates();
-		//		cin.clear();
-		//		cin.ignore(10000, '\n');
-		//		break;
-		//	}
-
-		//	case 3: {
-		//		db.showAlbumsBetweenDatesAndComposer();
-		//		cin.clear();
-		//		cin.ignore(10000, '\n');
-		//		break;
-		//	}
-
-		//	case 4: {
-		//		db.showMostPopularInstrument();
-		//		cin.clear();
-		//		cin.ignore(10000, '\n');
-		//		break;
-		//	}
-
-		//	case 5: {
-		//		db.instrumentsInAlbum();
-		//		cin.clear();
-		//		cin.ignore(10000, '\n');
-		//		break;
-		//	}
-
-		//	case 6: {
-		//		db.releaseMostNumOfAlbums();
-		//		cin.clear();
-		//		cin.ignore(10000, '\n');
-		//		break;
-		//	}
-
-		//	case 7: {
-		//		db.mostPopularManufacturer();
-		//		cin.clear();
-		//		break;
-		//	}
-
-		//	case 8: {
-		//		db.totalRecordsInMin();
-		//		cin.clear();
-		//		break;
-		//	}
-
-		//	case 9: {
-		//		db.mostAssistMusician();
-		//		cin.clear();
-		//		break;
-		//	}
-
-		//	case 10: {
-		//		db.mostPopularGenre();
-		//		cin.clear();
-		//		break;
-		//	}
-
-		//	case 11: {
-		//		db.bestThechnician();
-		//		cin.clear();
-		//		break;
-		//	}
-		//	case 12: {
-		//		db.firstRecAlbum();
-		//		cin.clear();
-		//		break;
-		//	}
-
-		//	case 13: {
-		//		db.songsInTwoOrMoreAlbums();
-		//		cin.clear();
-		//		break;
-		//	}
-
-		//	case 14: {
-		//		db.techniciansInWholeAlbum();
-		//		cin.ignore(10000, '\n');
-		//		break;
-		//	}
-
-		//	case 15: {
-		//		db.musicianWithMostGenres();
-		//		cin.clear();
-		//		break;
-		//	}
-
-		//	default: {
-		//		cout << "\ninvalid choice" << endl;
-		//		mainSelect = 42;
-		//		cin.clear();
-		//		cin.ignore(10000, '\n');
-		//		break;
-		//	}
-
-		//	}
-
-		//	cout << endl << "Press 1 to Return To the Main Menu.\nYour Choice: " << endl;
-		//	mainSelect = 0; //by CHEPA
-		//	while (mainSelect != 1) {
-		//		cin >> mainSelect;
-		//		cin.clear();
-		//		cin.ignore(10000, '\n');
-		//	}
-
-
-		//}
 	}
 	return 0;
+}
+
+void buy()
+{
+	Controller& ctrl = Controller::getInstance();
+	int select;
+	while (select == 1)
+	{
+		int watchid;
+		cout << "please write the ID of the watch you wish to buy" << endl;
+		cin >> watchid;
+		if (ctrl.buy(watchid))
+		{
+			cout << "Enjoy your new watch.\n To buy another watch press 1" << endl
+				<< "To go back to main menu press any button";
+
+		}
+		else
+		{
+			cout << "ID does not exist,please press 1 to try again or press any button to go back to main menu" << endl;
+		}
+		cin >> select;
+	}
 }
 

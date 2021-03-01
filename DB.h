@@ -42,22 +42,29 @@ public:
 
 
 	/* Menu Options Functions */
-
+	//customer functions
 	//Log in
 	tuple<string, string, int, int> login(string, string);
 	bool signUp(string, string, string);
 	bool CheckMail(string);
 	vector<string> showStock();
-	string showStock(int);
+	/*string showStock(int);*/
 	vector<string> showStock(int,string,int,int);
-
 	bool buy(int,string);
 	bool order(int,string,string,int)throw(int);
 	bool subscribe(string);
-	bool unsubscribe();
+	//bool unsubscribe();
 	bool checkifSubscribed(string);
 	int getUserid(string);
+	vector<string> getReceipt(string);
 
+	//manager/employee functions
+	int getQuantity(int);
+	bool changeRole(string);
+	bool updateStock(int,int,int = 0,int = 0,string = NULL,string = NULL,string = NULL);
+	bool informCustomers();
+	vector<string> viewOrders();
+	vector<string> viewReport(string,string = NULL);
 
 	////Option 1 
 	//void showBetweenTwoDates();

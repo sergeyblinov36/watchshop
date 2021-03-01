@@ -14,7 +14,7 @@ class Controller
 	public:
 		static Controller& getInstance();
 
-		bool login(string, string) throw(string);
+		bool login(string, string);
 		bool signUp(string mail, string name, string pass)throw(string);
 		bool browse(int option, string msg = "", int start = 0, int top = 0);
 		bool searchByBrand(string);
@@ -26,6 +26,11 @@ class Controller
 		bool checkSubscribed();
 		bool unsubscribe();
 		void welcomeMSG();
+		bool showReceipt();
+		void showOrders();
+		bool updateStock(int, int, int, int, string, string, string);
+		bool viewReport(int*);
+		bool checkRole();
 
 };
 

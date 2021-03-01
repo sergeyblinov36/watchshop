@@ -13,6 +13,6 @@ public:
 	User(string,string,int,int);
 	void print();
 	string getEmail();
-
+	int getRole();
 };
 
