@@ -226,7 +226,7 @@ vector<string> Database::showStock(int option,string msg = NULL, int start = 0, 
 	{
 		try
 		{
-			pstmt = con->prepareStatement("SELECT * FROM watches WHERE type = ?;");
+			pstmt = con->prepareStatement("SELECT * FROM watches WHERE type like ?;");
 		}
 		catch (SQLException& e) {
 			cout << e.what();
@@ -678,4 +678,21 @@ vector<string> Database::viewReport(string startDate, string endDate)
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//ps: i'm both proud and ashamed of this project
 #endif

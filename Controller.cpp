@@ -67,7 +67,7 @@ bool Controller::signUp(string mail,string name,string pass) throw(string)
 
 bool Controller::browse(int option, string msg, int start, int top)
 {
-
+	Controller::watcheid.clear();
 	vector<string> data = db.showStock(option,msg,start,top);
 	int numOfCol = 6;
 	int i = 0;

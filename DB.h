@@ -66,38 +66,6 @@ public:
 	vector<string> viewOrders();
 	vector<string> viewReport(string,string = NULL);
 
-	////Option 1 
-	//void showBetweenTwoDates();
-	////Option 2
-	//void showSongsBetweenTwoDates();
-	////Option 3
-	//void showAlbumsBetweenDatesAndComposer();
-	////Option 4
-	//void showMostPopularInstrument();
-	////Option 5
-	//void instrumentsInAlbum();
-	////Option 6
-	//void releaseMostNumOfAlbums();
-	////Option 7
-	//void mostPopularManufacturer();
-	//// Option 8
-	//void totalRecordsInMin();
-	//// Option 9
-	//void mostAssistMusician();
-	//// Option 10
-	//void mostPopularGenre();
-	//// Option 11 
-	//void bestThechnician();
-	////Option 12
-	//void firstRecAlbum();
-	////Option 13
-	//void songsInTwoOrMoreAlbums();
-	////Option 14
-	//void techniciansInWholeAlbum();
-	////Option 15 
-	//void musicianWithMostGenres();
-
-
-
+	
 };
 #endif

@@ -16,32 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `watches`
+-- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `watches`;
+DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `watches` (
-  `watchid` int NOT NULL,
-  `brand` varchar(45) NOT NULL,
-  `type` varchar(45) NOT NULL,
-  `price` int NOT NULL,
-  `quantity` int NOT NULL,
-  `model` varchar(45) NOT NULL,
-  PRIMARY KEY (`watchid`),
-  UNIQUE KEY `watchid_UNIQUE` (`watchid`)
+CREATE TABLE `orders` (
+  `userid` int NOT NULL,
+  `watchid` int DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `orderid` int NOT NULL,
+  PRIMARY KEY (`orderid`),
+  KEY `watchid_idx` (`watchid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `watches`
+-- Dumping data for table `orders`
 --
 
-LOCK TABLES `watches` WRITE;
-/*!40000 ALTER TABLE `watches` DISABLE KEYS */;
-INSERT INTO `watches` VALUES (1,'Bamford london','analog',500,11,'mayfair date'),(2,'casio','digital',39,9,'classic');
-/*!40000 ALTER TABLE `watches` ENABLE KEYS */;
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,1,'2021-02-27 12:14:29',' ',1),(1,41,'2021-02-28 13:25:24','iphone smart watch',18467);
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-25  2:57:57
+-- Dump completed on 2021-03-01 18:46:13

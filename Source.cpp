@@ -81,8 +81,8 @@ int main(int argc, char* argv[])
 		while (SecSelect != 0)
 		{
 			ctrl.welcomeMSG();
-			cin >> SecSelect;
-			system("CLS");
+			//cin >> SecSelect;
+			//system("CLS");
 			//if a customer
 			if (ctrl.checkRole())
 			{
@@ -164,6 +164,8 @@ int main(int argc, char* argv[])
 					case 6:
 					{
 						ctrl.showReceipt();
+						cout << "Press any button to continue" << endl;
+						cin >> SecSelect;
 						SecSelect = 0;
 						break;
 					}
@@ -173,6 +175,8 @@ int main(int argc, char* argv[])
 						break;
 					}
 				}
+				system("CLS");
+				break;
 			}
 			case 2:
 			{
@@ -341,6 +345,7 @@ void buy()
 {
 	Controller& ctrl = Controller::getInstance();
 	int select = 1;
+	cout << endl;
 	while (select == 1)
 	{
 		int watchid;
