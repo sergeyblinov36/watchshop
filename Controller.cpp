@@ -183,7 +183,7 @@ void Controller::showOrders()
 	cout << endl;
 }
 
-bool Controller::updateStock(int option, int watchid, int quantity = 0, int price = 0, string brand = NULL, string type = NULL, string model = NULL)
+bool Controller::updateStock(int option, int watchid, int quantity, int price, string brand , string type, string model )
 {
 	bool state = false;
 	if (option == 1)
@@ -192,35 +192,38 @@ bool Controller::updateStock(int option, int watchid, int quantity = 0, int pric
 	}
 	if (option == 2)
 	{
-		state = db.updateStock(option, watchid, 0, price);
+		state = db.updateStock(option, watchid, quantity, price);
 		
 	}
 	if (option == 3)
 	{
 		if (brand != NULL && type != NULL && model != NULL)
 		{
-			state = db.updateStock(option, watchid, quantity, price, type, model);
+			state = db.updateStock(option, watchid, quantity, price,brand, type, model);
 		}
 	}
 	return false;
 }
 
-bool Controller::viewReport(int* date)
+
+
+bool Controller::viewReport(int date[])
 {
 	bool state = false;
 	string startDate;
-	string endDate;
-	if (date == NULL)
+	string endDate= "";
+	if (date != NULL)
 	{
-		if (sizeof(date) / sizeof(date[0]) == 3)
+		if (date[3] < 2020)
 		{
-			startDate = to_string(date[0])+"-"+to_string(date[1])+"-"+to_string(date[2]);
+			startDate = to_string(date[0]) + "-" + to_string(date[1]) + "-" + to_string(date[2]);
 		}
-		else if (sizeof(date) / sizeof(date[0]) == 6)
+		else if (date[3] >= 2020)
 		{
 			startDate = to_string(date[0]) + "-" + to_string(date[1]) + "-" + to_string(date[2]);
 			endDate = to_string(date[3]) + "-" + to_string(date[4]) + "-" + to_string(date[5]);
 		}
+		else return false;
 	}
 	vector<string> data = db.viewReport(startDate,endDate);
 	int numOfCol = 2;
@@ -247,6 +250,18 @@ bool Controller::checkRole()
 		state = true;
 	}
 	return state;
+}
+
+bool Controller::changeRole(string email)
+{
+	if (!email.empty())
+	{
+		if (db.changeRole(email))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 

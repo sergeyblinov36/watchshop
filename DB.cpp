@@ -525,7 +525,11 @@ bool Database::changeRole(string email)
 	}
 	pstmt->setInt(1, userid);
 	rset = pstmt->executeQuery();
-	state = true;
+	if (rset->next())
+	{
+		state = true;
+	}
+	
 	delete con;
 	delete pstmt;
 	delete rset;
@@ -541,7 +545,7 @@ bool Database::updateStock(int option,int watchid, int quantity, int price, stri
 	bool state = false;
 	Connection* con = driver->connect(connection_properties);
 	con->setSchema(DB_NAME);
-	ResultSet* rset;
+	ResultSet* rset = NULL;
 	PreparedStatement* pstmt = NULL;
 	if (option == 1)
 	{
@@ -569,6 +573,7 @@ bool Database::updateStock(int option,int watchid, int quantity, int price, stri
 		}
 		pstmt->setInt(1, price);
 		pstmt->setInt(2, watchid);
+		rset = pstmt->executeQuery();
 		state = true;
 	}
 	else if(option == 3)
@@ -630,7 +635,7 @@ vector<string> Database::viewReport(string startDate, string endDate)
 {
 	Connection* con = driver->connect(connection_properties);
 	con->setSchema(DB_NAME);
-	ResultSet* rset;
+	ResultSet* rset =NULL;
 	PreparedStatement* pstmt = NULL;
 	vector<string> data;
 	if (endDate == NULL)

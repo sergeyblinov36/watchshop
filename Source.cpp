@@ -19,7 +19,8 @@ int main(int argc, char* argv[])
 
 		cout << "\n\n"
 			<< "1) login" << endl
-			<< "2) sign up" << endl;
+			<< "2) sign up" << endl
+			<< "3) exit" << endl;
 		cin >> mainSelect;
 
 		switch (mainSelect) {
@@ -64,6 +65,11 @@ int main(int argc, char* argv[])
 			{
 				cout << "Incorrect input";
 			}
+			break;
+		}
+		case 3:
+		{
+			mainSelect = 0;
 			break;
 		}
 		default:
@@ -196,7 +202,135 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-
+			//An employee has to register as a customer and then the manager changing his settings
+			cout << "Press 1 to change role" << endl
+				<< "Press 2 to see what is in stock" << endl
+				<< "Press 3 to update stock" << endl
+				<< "Press 4 to view pending orders" << endl
+				<< "Press 5 to view report" << endl
+				<< "Press 6 to notify customer upon arriving order" << endl
+				<< "Press 7 to log off" << endl;
+			cin >> SecSelect;
+			switch (SecSelect)
+			{
+				case 1:
+				{
+					system("CLS");
+					while (SecSelect == 1) 
+					{
+						string email;
+						cout << "Please enter employee's email" << endl;
+						cin >> email;
+						if (ctrl.changeRole(email))
+						{
+							cout << "Status changed successfuly" << endl;
+							SecSelect = 2;
+						}
+						else
+						{
+							cout << "Incorrect input.\n Would you like to try again? \n 1)yes    *)no" << endl;
+							cin >> SecSelect;
+						}
+					}
+					break;
+				}
+				case 2:
+				{
+					system("CLS");
+					ctrl.browse(SecSelect);
+					break;
+				}
+				case 3:
+				{
+					while (SecSelect != 4)
+					{
+						system("CLS");
+						cout << "Press 1 to refill stock" << endl
+							<< "Press 2 to change prices" << endl
+							<< "press 3 to stock brand new merchandise" << endl
+							<< "Press 4 to go back to main menu" << endl;
+						cin >> SecSelect;
+						switch (SecSelect)
+						{
+							case 1:
+							{
+								int watchid, quantity;
+								cout << "Please enter watch ID" << endl;
+								cin >> watchid;
+								cout << "Please enter how many watches have arrived" << endl;
+								cin >> quantity;
+								ctrl.updateStock(SecSelect, watchid, quantity);
+								break;
+							}
+							case 2:
+							{
+								int watchid, price;
+								
+								cout << "Please enter watch ID" << endl;
+								cin >> watchid;
+								cout << "Please enter the new price" << endl;
+								cin >> price;
+								ctrl.updateStock(SecSelect, watchid, 0,price);
+								break;
+							}
+							case 3:
+							{
+								int watchid, quantity, price;
+								string brand, type, model;
+								cout << "Please enter watch ID" << endl;
+								cin >> watchid;
+								cout << "Please enter how many watches have arrived" << endl;
+								cin >> quantity;
+								cout << "Please enter price" << endl;
+								cin >> price;
+								cout << "Please enter brand" << endl;
+								cin >> brand;
+								cout << "Please enter type" << endl;
+								cin >> type;
+								cout << "Please enter model" << endl;
+								cin >> model;
+								ctrl.updateStock(SecSelect, watchid, quantity, price, brand, type, model);
+								break;
+							}
+							case 4:
+							{
+								break;
+							}
+							default:
+							{
+								cout << "Wrong input please try again" << endl;
+								break;
+							}
+						}
+					}
+				
+				}
+				case 4:
+				{
+					ctrl.showOrders();
+					break;
+				}
+				case 5:
+				{
+					int date[6];
+					cout << "Please enter starting date [YYYY MM DD]"<<endl;
+					cin >> date[0] >> date[1] >> date[2];
+					cout << "Please enter ending date or anything under 2020 to check the last 24H" << endl;
+					cin >> date[3] >> date[4] >> date[5];
+					ctrl.viewReport(date);
+					break;
+				}
+				case 6:
+				{
+					cout << "Under development" << endl;
+					break;
+				}
+				case 7:
+				{
+					SecSelect = 0;
+					break;
+				}
+			}
 			}
 		}
 	}
@@ -206,7 +340,7 @@ int main(int argc, char* argv[])
 void buy()
 {
 	Controller& ctrl = Controller::getInstance();
-	int select;
+	int select = 1;
 	while (select == 1)
 	{
 		int watchid;
